@@ -144,6 +144,9 @@ public class SetupActivity extends PreferenceActivity implements OnSharedPrefere
 							dialogHandler.sendEmptyMessage(ID_DIALOG_UPDATING);
 							boolean ret = false;
 
+							// force a re-test of root permission
+							application.coretask.testRootPermission();
+
 							if (value.equals("Automatic")) {
 								try {
 									chipsetPref

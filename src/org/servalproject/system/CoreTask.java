@@ -390,9 +390,6 @@ public class CoreTask {
 
 	public boolean testRootPermission() {
 		try {
-			if (hasRoot != 0)
-				return hasRoot == 1;
-
 			File su = new File("/system/bin/su");
 			if (!su.exists()) {
 				File su2 = new File("/system/xbin/su");
@@ -412,6 +409,12 @@ public class CoreTask {
 			return false;
 		}
     }
+
+	public boolean hasRootPermission() {
+		if (hasRoot == 0)
+			testRootPermission();
+		return hasRoot == 1;
+	}
 
     //TODO: better exception type?
 	public int runRootCommand(String command) throws IOException {
