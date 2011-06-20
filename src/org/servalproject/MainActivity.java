@@ -12,6 +12,8 @@
 
 package org.servalproject;
 
+import java.io.IOException;
+
 import org.servalproject.system.NativeTask;
 import org.sipdroid.sipua.UserAgent;
 import org.sipdroid.sipua.ui.Receiver;
@@ -277,7 +279,11 @@ public class MainActivity extends Activity {
 				new Thread(new Runnable(){
 					@Override
 					public void run(){
-						MainActivity.this.application.stopAdhoc();
+						try {
+							MainActivity.this.application.stopAdhoc();
+						} catch (IOException e) {
+							Log.e("BatPhone", e.toString(), e);
+						}
 						MainActivity.this.dismissDialog(MainActivity.ID_DIALOG_STOPPING);
 						MainActivity.this.viewUpdateHandler.sendMessage(new Message());
 					}
