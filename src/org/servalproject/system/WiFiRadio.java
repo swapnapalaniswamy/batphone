@@ -12,6 +12,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.servalproject.ServalBatPhoneApplication;
 import org.servalproject.WifiApControl;
@@ -469,15 +471,45 @@ public class WiFiRadio {
 		switchWiFiMode(newMode);
 	}
 
+	public WifiMode getNextCyclingMode() {
+		WifiMode values[] = WifiMode.values();
+
+		int index = 0;
+		if (currentMode != null)
+			index = this.currentMode.ordinal() + 1;
+
+    while (true) {
+			if (index > values.length)
+				index = 0;
+			WifiMode newMode = values[index];
+			if (this.supportedModes.contains(newMode)) {
+				// do stuff...
+				return newMode;
+			}
+			index++;
+		}
+	}
 	public void setWiFiCycling() throws IOException {
 		// XXX Create a schedule of modes that covers all supported modes
 		// XXX Will eventually call switchWiFiMode()
-		if (supportedModes.contains(WifiMode.Adhoc))
-			switchWiFiMode(WifiMode.Adhoc);
-		else
-			switchWiFiMode(WifiMode.Client);
-	}
+		// String arrsSupportedModes[]=this.supportedModes.toArray();
+		int delay = 1000;
+		int period = 30000;
+		Timer timer = new Timer();
 
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				try {
+					switchWiFiMode(getNextCyclingMode());
+				} catch (IOException exce) {
+					Log.e("Exception caught at set_Adhoc_mode",
+							exce.toString(), exce);
+				}
+			}
+		}, delay, period);
+
+	}
 	public WifiMode getCurrentMode() {
 		return currentMode;
 	}

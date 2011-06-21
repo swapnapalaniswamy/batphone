@@ -259,6 +259,7 @@ public class ServalBatPhoneApplication extends Application {
         boolean bluetoothPref = this.settings.getBoolean("bluetoothon", false);
 		boolean encEnabled = this.settings.getBoolean("encpref", false);
 		String ssid = this.settings.getString("ssidpref", DEFAULT_SSID);
+
         String txpower = this.settings.getString("txpowerpref", "disabled");
         String lannetwork = this.settings.getString("lannetworkpref", DEFAULT_LANNETWORK);
         String wepkey = this.settings.getString("passphrasepref", DEFAULT_PASSPHRASE);
